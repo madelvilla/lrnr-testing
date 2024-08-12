@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-const ANTHROPIC_API_KEY = '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'; // Add your key here
+const ANTHROPIC_API_KEY = 'Api Key here'; // Add your key here
 
 router.post('/generate', async (req, res) => {
     const { topic, expertise, numberOfQuestions, style } = req.body;
