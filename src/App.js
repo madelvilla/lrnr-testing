@@ -1,15 +1,20 @@
 // client/src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './components/Home';
-import QuizGeneration from './components/QuizGeneration';
-import QuizPage from './components/QuizPage';
-import ResultsPage from './components/ResultsPage';
-import AccountPage from './components/AccountPage';
+import Nav from './components/Nav';
+import Home from './pages/Home';
+import QuizGeneration from './pages/QuizGeneration';
+import QuizPage from './pages/QuizPage';
+import ResultsPage from './pages/ResultsPage';
+import AccountPage from './pages/AccountPage';
 
 function App() {
     return (
+        <>
         <Router>
+        <div className='header'>
+            <Nav />
+        </div>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/quiz-generation" element={<QuizGeneration />} />
@@ -18,6 +23,7 @@ function App() {
                 <Route path="/account" element={<AccountPage />} />
             </Routes>
         </Router>
+        </>
     );
 }
 
