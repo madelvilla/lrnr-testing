@@ -36,8 +36,6 @@ app.post('/generate-trivia', async (req, res) => {
     try {
       const { topic, expertiseLevel, questionCount, questionStyle } = req.body;
       
-      // Example customization based on the provided parameters
-      // Adjust the request body according to the Anthropic API documentation
       const requestBody = {
         model: "claude-3-opus-20240229",
         max_tokens: 2000,
@@ -58,7 +56,7 @@ app.post('/generate-trivia', async (req, res) => {
       const response = await axios.post('https://api.anthropic.com/v1/messages', requestBody, {
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': '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', 
+          'x-api-key': process.env.ANTHROPIC_API_KEY, 
           'anthropic-version': '2023-06-01'
         }
       });
