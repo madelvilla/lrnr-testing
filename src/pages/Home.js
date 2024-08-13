@@ -1,6 +1,6 @@
 import React from 'react';
-import '../App.css';
-import logo from '../logo.png';  // Adjust the path to the image
+import '../Home.css';
+import logo from '../logo.png';  
 
 const HomePage = () => {
     return (
