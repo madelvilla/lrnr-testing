@@ -1,14 +1,74 @@
-// server/server.js
-const express = require('express');
-const bodyParser = require('body-parser');
-const quizRoutes = require('./routes/quiz');
+// npm package imports
+import express from 'express';
+import bodyParser from 'body-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cors from 'cors';
+import axios from 'axios';
+import { Anthropic } from '@anthropic-ai/sdk';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const port = 3000;
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
-app.use('/api/quiz', quizRoutes);
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+//Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
+app.get("/", (req, res) => {
+    console.log("GET / route accessed");
+    res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.post("/test", (req, res) => {
+    console.log("POST /test route accessed");
+    console.log("Request body:", req.body);
+    res.json({ message: "Test route working!" });
+});
+
+app.post('/generate-trivia', async (req, res) => {
+    try {
+      const { topic, expertiseLevel, questionCount, questionStyle } = req.body;
+      
+      const requestBody = {
+        model: "claude-3-opus-20240229",
+        max_tokens: 2000,
+        temperature: 0.5,
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `Generate ${questionCount} trivia questions on the topic of "${topic}" tailored to an ${expertiseLevel} level audience. Questions should be styled as ${questionStyle}.`
+              }
+            ]
+          }
+        ]
+      };
+  
+      const response = await axios.post('https://api.anthropic.com/v1/messages', requestBody, {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': process.env.ANTHROPIC_API_KEY, 
+          'anthropic-version': '2023-06-01'
+        }
+      });
+  
+      res.json(response.data); // Send the response data back to the client
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).send({ error: 'Failed to generate trivia questions' }); // Send an error response
+    }
+  });
+
+// Start server
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
