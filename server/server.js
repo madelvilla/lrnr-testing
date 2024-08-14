@@ -1,16 +1,17 @@
 // npm package imports
-import express from 'express';
-import bodyParser from 'body-parser';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import cors from 'cors';
-import axios from 'axios';
-import { Anthropic } from '@anthropic-ai/sdk';
+const express = require('express');
+const path = require('path');
+const { fileURLToPath } = require('url');
+const cors = require('cors');
+const axios = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-const port = 3000;
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+
+const port = 4000;
 const app = express();
 
 // Middleware
@@ -20,11 +21,6 @@ app.use(express.json());
 //Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
-app.get("/", (req, res) => {
-    console.log("GET / route accessed");
-    res.sendFile(path.join(__dirname, "index.html"));
-});
 
 app.post("/test", (req, res) => {
     console.log("POST /test route accessed");
@@ -34,8 +30,8 @@ app.post("/test", (req, res) => {
 
 app.post('/generate-trivia', async (req, res) => {
     try {
-      const { topic, expertiseLevel, questionCount, questionStyle } = req.body;
-      
+      const { quizTopic, expertiseLevel, numberOfQuestions, styleOfQuestions } = req.body;
+      console.log('Generating trivia...', { quizTopic, expertiseLevel, numberOfQuestions, styleOfQuestions });
       const requestBody = {
         model: "claude-3-opus-20240229",
         max_tokens: 2000,
@@ -46,13 +42,14 @@ app.post('/generate-trivia', async (req, res) => {
             content: [
               {
                 type: "text",
-                text: `Generate ${questionCount} trivia questions on the topic of "${topic}" tailored to an ${expertiseLevel} level audience. Questions should be styled as ${questionStyle}.`
+                text: `Generate ${numberOfQuestions} trivia questions on the topic of "${quizTopic}" tailored to an ${expertiseLevel} level audience. Questions should be styled as ${styleOfQuestions}. Provide the answer to the questions after the question.`
               }
             ]
           }
         ]
       };
-  
+      console.log(requestBody);
+
       const response = await axios.post('https://api.anthropic.com/v1/messages', requestBody, {
         headers: {
           'Content-Type': 'application/json',
@@ -61,12 +58,12 @@ app.post('/generate-trivia', async (req, res) => {
         }
       });
   
-      res.json(response.data); // Send the response data back to the client
+      res.json(response.data); 
     } catch (error) {
       console.error('Error:', error);
       res.status(500).send({ error: 'Failed to generate trivia questions' }); // Send an error response
     }
-  });
+});
 
 // Start server
 app.listen(port, () => {
