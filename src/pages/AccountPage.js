@@ -1,26 +1,31 @@
-// client/src/components/AccountPage.js
 import React from 'react';
+import { LuFlame } from "react-icons/lu";
+import { FaThList } from "react-icons/fa";
+import { IoPerson } from "react-icons/io5";
+import './AccountPage.css';
 
 const AccountPage = () => {
-    const userInfo = {
-        username: 'JohnDoe',
-        email: 'johndoe@example.com',
-        createdAt: '2023-01-15',
-        quizzesTaken: 5,
-    };
-
     return (
         <div className="account-page">
-            <h2>Account Information</h2>
+            <h1>Account</h1>
             <div className="account-details">
-                <p><strong>Username:</strong> {userInfo.username}</p>
-                <p><strong>Email:</strong> {userInfo.email}</p>
-                <p><strong>Account Created:</strong> {userInfo.createdAt}</p>
-                <p><strong>Quizzes Taken:</strong> {userInfo.quizzesTaken}</p>
-            </div>
-            <div className="account-actions">
-                <button>Edit Profile</button>
-                <button>Logout</button>
+                <div className='streak'>
+                <div className='account-icons'><LuFlame /></div>
+                    <h3>Streak</h3>
+                    <p>You have a streak of 5 days!</p>
+                </div>
+                <div className='platinum'>
+                <div className='account-icons'><FaThList /></div>
+                    <h3>Platinum Quizzes</h3>
+                    <p>golang - Intermediate</p>
+                    <p>JavaScript - beginner</p>
+                    <p>AWS - beginner</p>
+                </div>
+                <div className='level'>
+                <div className='account-icons'><IoPerson /></div>
+                    <h3>lrnr Level: 2</h3>
+                    <p>150/200 xp</p>
+                </div>
             </div>
         </div>
     );

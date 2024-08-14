@@ -1,6 +1,6 @@
-// client/src/components/ResultsPage.js
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import './ResultsPage.css';
 
 const ResultsPage = () => {
     const location = useLocation();
@@ -12,8 +12,8 @@ const ResultsPage = () => {
 
     return (
         <div className="results-page">
-            <h2>Quiz Results</h2>
-            <p>You answered {correctAnswers} out of {totalQuestions} correctly!</p>
+            <h2>lrnr</h2>
+            <p>Questions Right: {correctAnswers}</p>
 
             <div className="results-summary">
                 {answers.map((answer, index) => (
@@ -25,7 +25,8 @@ const ResultsPage = () => {
                 ))}
             </div>
 
-            <button onClick={() => navigate('/quiz-generation')}>Try Again</button>
+            <button className='results-button'
+            onClick={() => navigate('/quiz-generation')}>TRY ANOTHER QUIZ</button>
         </div>
     );
 };

@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: flex-start;
     padding: 20px;
-    background-color: #03a1fc;
+    background-color: #4289EA;
     color: white;
     width: 100%;
     box-sizing: border-box; 
@@ -49,7 +49,7 @@
 }
 
 /* Mobile responsiveness */
-@media (max-width: 800px) {
+@media (max-width: 600px) {
     .footer-container {
         flex-direction: column;
         align-items: center;
@@ -58,14 +58,11 @@
     
     .footer-container p {
         max-width: 100%;
+        padding-bottom: 10px; 
     }
     
     .footer-links {
         max-width: 100%;
-        margin-top: 20px;
-    }
-    
-    .footer-links ul li {
-        text-align: center;
+        margin-top: 10px;
     }
 }
