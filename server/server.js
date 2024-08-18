@@ -1,15 +1,11 @@
 // npm package imports
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
-const { fileURLToPath } = require('url');
 const cors = require('cors');
 const axios = require('axios');
 const dotenv = require('dotenv');
 dotenv.config();
-
-
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
 const port = 4000;
 const app = express();
@@ -42,7 +38,7 @@ app.post('/generate-trivia', async (req, res) => {
             content: [
               {
                 type: "text",
-                text: `Generate ${numberOfQuestions} trivia questions on the topic of "${quizTopic}" tailored to an ${expertiseLevel} level audience. Questions should be styled as ${styleOfQuestions}. Provide the answer to the questions after the question.`
+                text: `Generate ${numberOfQuestions} trivia questions on the topic of "${quizTopic}" tailored to an ${expertiseLevel} level audience. Questions should be styled as ${styleOfQuestions}. Provide the answer to the questions after the question, make sure that the answer to questions are simple sentences with a maximum of three words,  preferably though they will be one word answers. Also provide an explanation for each question after the answer.`
               }
             ]
           }
@@ -53,7 +49,7 @@ app.post('/generate-trivia', async (req, res) => {
       const response = await axios.post('https://api.anthropic.com/v1/messages', requestBody, {
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': process.env.ANTHROPIC_API_KEY || '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', 
+          'x-api-key': process.env.ANTHROPIC_API_KEY, 
           'anthropic-version': '2023-06-01'
         }
       });
